@@ -13,19 +13,43 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="1.2*"></RowDefinition>
+            <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
-            <RowDefinition Height="0.7*"></RowDefinition>
+            <RowDefinition Height="0.5*"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <TextBox Text="Ahorcado"></TextBox>
+            <TextBlock Text="Ahorcado"></TextBlock>
         </Viewbox>
-        <Image Source="./assets/mashupeidos.png" Stretch="UniformToFill" Margin="5" Grid.Row="1"></Image>
-        <StackPanel Grid.Column="0" Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Content="Nuevo Juego" Width="85" Margin="5"></Button>
-            <Button Content="Rendirse" Width="85" Margin="5"></Button>
-        </StackPanel>
-        
+        <Image x:Name="hangmanImage" Source="./assets/0.jpg" Stretch="UniformToFill" Margin="5" Grid.Row="1"></Image>
+        <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" LastChildFill="False">
+            <Button DockPanel.Dock="Left" Content="Nuevo Juego" Width="85" Margin="5"></Button>
+            <Button DockPanel.Dock="Left" Content="Rendirse" Width="85" Margin="5"></Button>
+            <ComboBox x:Name="LanguagesComboBox" DockPanel.Dock="Right" Width="100" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <ComboBoxItem Content="Español" IsSelected="True"></ComboBoxItem>
+                <ComboBoxItem Content="Inglés"></ComboBoxItem>
+            </ComboBox>
+            <ComboBox x:Name="SetsComboBox" DockPanel.Dock="Right" Width="100" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
+                <ComboBoxItem Content="Habilidades" IsSelected="True"></ComboBoxItem>
+                <ComboBoxItem Content="Pasivas"></ComboBoxItem>
+                <ComboBoxItem Content="Objetos"></ComboBoxItem>
+                <ComboBoxItem Content="Skins"></ComboBoxItem>
+            </ComboBox>
+        </DockPanel>
+        <Grid Grid.Column="1" Grid.Row="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Viewbox>
+                <StackPanel x:Name="LettersStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                
+                </StackPanel>
+            </Viewbox>
+            <UniformGrid x:Name="LetterButtonsUniformGrid" Grid.Row="1" Columns="9" Rows="3">
+                
+            </UniformGrid>
+        </Grid>
     </Grid>
 </Window>
