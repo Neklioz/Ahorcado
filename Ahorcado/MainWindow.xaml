@@ -4,8 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Ahorcado"
-        mc:Ignorable="d"
-        Title="Ahorcado" Height="450" Width="800">
+        mc:Ignorable="d" 
+        Title="Ahorcado" 
+        Height="450" Width="800"
+        MinHeight="450" MinWidth="500"
+        KeyDown="Letter_KeyDown">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -19,21 +22,29 @@
         </Grid.RowDefinitions>
 
         <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
-            <TextBlock Text="Ahorcado"></TextBlock>
+            <TextBlock Text="Ahorcado - Aura Kingdom">
+                <TextBlock.Foreground>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="#FF2FD9FF" Offset="0" />
+                        <GradientStop Color="#FF002859" Offset="0.85" />
+                    </LinearGradientBrush>
+                </TextBlock.Foreground></TextBlock>
         </Viewbox>
-        <Image x:Name="hangmanImage" Source="./assets/0.jpg" Stretch="UniformToFill" Margin="5" Grid.Row="1"></Image>
+        <Image x:Name="hangmanImage" Source="./assets/0.jpg" Stretch="Uniform" Margin="5" Grid.Row="1"></Image>
         <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" LastChildFill="False">
-            <Button DockPanel.Dock="Left" Content="Nuevo Juego" Width="85" Margin="5"></Button>
-            <Button DockPanel.Dock="Left" Content="Rendirse" Width="85" Margin="5"></Button>
+            <Button x:Name="NewGameButton" DockPanel.Dock="Left" Content="Nuevo Juego" Width="85" Margin="5" Click="NewGameButton_Click"></Button>
+            <Button x:Name="SurrenderButton" DockPanel.Dock="Left" Content="Rendirse" Width="85" Margin="5" Click="Surrender_Click"></Button>
             <ComboBox x:Name="LanguagesComboBox" DockPanel.Dock="Right" Width="100" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                <ComboBoxItem Content="Español" IsSelected="True"></ComboBoxItem>
-                <ComboBoxItem Content="Inglés"></ComboBoxItem>
+                <ComboBoxItem Tag="ES" Content="Español" IsSelected="True"></ComboBoxItem>
+                <ComboBoxItem Tag="US" Content="Inglés"></ComboBoxItem>
             </ComboBox>
             <ComboBox x:Name="SetsComboBox" DockPanel.Dock="Right" Width="100" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
-                <ComboBoxItem Content="Habilidades" IsSelected="True"></ComboBoxItem>
-                <ComboBoxItem Content="Pasivas"></ComboBoxItem>
-                <ComboBoxItem Content="Objetos"></ComboBoxItem>
-                <ComboBoxItem Content="Skins"></ComboBoxItem>
+                <ComboBoxItem Tag="eidolons" Content="Eidolon"></ComboBoxItem>
+                <!-- <ComboBoxItem Content="Habilidades"></ComboBoxItem> -->
+                <ComboBoxItem Tag="masteries" Content="Maestrías"></ComboBoxItem>
+                <ComboBoxItem Tag="items" Content="Objetos"></ComboBoxItem>
+                <ComboBoxItem Tag="titles" Content="Títulos"></ComboBoxItem>
+                <!-- <ComboBoxItem Content="Monstruos"></ComboBoxItem> -->
             </ComboBox>
         </DockPanel>
         <Grid Grid.Column="1" Grid.Row="1" Margin="20">
@@ -47,9 +58,7 @@
                 
                 </StackPanel>
             </Viewbox>
-            <UniformGrid x:Name="LetterButtonsUniformGrid" Grid.Row="1" Columns="9" Rows="3">
-                
-            </UniformGrid>
+            <UniformGrid x:Name="LetterButtonsUniformGrid" Grid.Row="1" Columns="9" Rows="3"></UniformGrid>
         </Grid>
     </Grid>
 </Window>
