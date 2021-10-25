@@ -47,12 +47,14 @@ namespace Ahorcado
             {
                 DisableComboBoxWarnings();
                 fallos = 0;
+                hangmanImage.Source = new BitmapImage(new Uri(@"/assets/" + fallos + ".jpg", UriKind.Relative));
                 letrasAcertadas = 0;
                 EnableButtons(true);
                 LettersStackPanel.Children.Clear();
                 SurrenderButton.IsEnabled = true;
             }
             SelectWord();
+            ViewBoxCheck();
             EnableComboBoxWarnings();
         }
 
@@ -68,7 +70,7 @@ namespace Ahorcado
         private void SelectWord()
         {
             word = GetSelectedSetWord().ToUpper();
-            parsedWord = NoAccents(word);
+            parsedWord = DeleteAccents(word);
 
             Border bottomBorder = new Border();
             bottomBorder.BorderThickness = new Thickness(0, 0, 0, 1);
@@ -91,7 +93,7 @@ namespace Ahorcado
 
         }
 
-        private String NoAccents(String word)
+        private String DeleteAccents(String word)
         {
             
             String parsedWord = new String(word.Normalize(NormalizationForm.FormD)
@@ -125,6 +127,9 @@ namespace Ahorcado
                     words.Add("Garuda");
                     words.Add("Abe no Seimei");
                     words.Add("Bastet");
+                    words.Add("Hiperion");
+                    words.Add("Halloween Zashi");
+                    words.Add("Otohime");
                     words.Add("Summer Persephone");
                     break;
                 case "masteries_ES":
@@ -133,29 +138,37 @@ namespace Ahorcado
                     words.Add("Vigor");
                     break;
                 case "masteries_US":
-                    words.Add("Fanatismo_US");
-                    words.Add("Romper la Defensa_US");
-                    words.Add("Vigor_US");
+                    words.Add("Divine Power");
+                    words.Add("Recapitulation of the Pistols");
+                    words.Add("Theory of Ars Noxia");
                     break;
                 case "items_ES":
                     words.Add("Rodajas de Sandía");
                     words.Add("Katana de Gea");
                     words.Add("Poción de Reiniciación de Gemas Secretas Superior");
+                    words.Add("Pargo Rápido");
+                    words.Add("Monopatín Rayo Cósmico");
                     break;
                 case "items_US":
-                    words.Add("Rodajas de Sandía_US");
-                    words.Add("Katana de Gea_US");
-                    words.Add("Poción de Reiniciación de Gemas Secretas Superior_US");
+                    words.Add("Sturdy Axe");
+                    words.Add("Titan Warrior Battle Boots");
+                    words.Add("Purified Obsidian Bracelet");
+                    words.Add("Purified Obsidian Bracelet");
+                    words.Add("Beebis the Ostrich");
                     break;
                 case "titles_ES":
                     words.Add("Eres adorable pero yo soy inmune");
                     words.Add("Siempre Joven");
                     words.Add("Blanco Nieve");
+                    words.Add("Confidente de Skandia");
+                    words.Add("Vinatero Sustituto");
+                    words.Add("Caracolero");
                     break;
                 case "titles_US":
-                    words.Add("Eres adorable pero yo soy inmune_US");
-                    words.Add("Siempre Joven_US");
-                    words.Add("Blanco Nieve_US");
+                    words.Add("Avatar");
+                    words.Add("Puzzle Pro");
+                    words.Add("Poor Winner");
+                    words.Add("Wind Walker");
                     break;
                 default:
                     break;
@@ -188,6 +201,22 @@ namespace Ahorcado
 
                     contador++;
                 }
+            }
+        }
+
+        private void ViewBoxCheck()
+        {
+            LettersViewbox.Child = LettersStackPanel;
+            FrameworkElement child = LettersViewbox.Child as FrameworkElement;
+            double childWidth = child.ActualWidth;
+
+            if(childWidth > 2000)
+            {
+                MessageBox.Show("Ok");
+                LettersViewbox.Child = null;
+                ScrollViewer scrollviewer = new ScrollViewer();
+                scrollviewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
+                LettersGrid.Children.Add(scrollviewer);
             }
         }
 
@@ -226,19 +255,25 @@ namespace Ahorcado
         private void EndGame(String text)
         {
             EnableButtons(false);
+            MostrarLetras();
             SurrenderButton.IsEnabled = false;
             MessageBox.Show(text, "¡Fin del juego!", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }
 
         private void Letter_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (letters.Contains(e.Key.ToString().ToUpper()))
+        {    
+            String letter = e.Key.ToString().ToUpper();
+            if(letter == "OEM3")
             {
-                Boolean wasEnabled = DisableButton(e.Key.ToString().ToUpper());
+                letter = "Ñ";
+            }
+            if (letters.Contains(letter) || letter == "OEM3")
+            {
+                Boolean wasEnabled = DisableButton(letter);
                 if(wasEnabled)
                 {
-                    CheckLetter(e.Key.ToString().ToUpper());
+                    CheckLetter(letter);
                 }
             }
         }
@@ -283,7 +318,6 @@ namespace Ahorcado
 
         private void Surrender_Click(object sender, RoutedEventArgs e)
         {
-            MostrarLetras();
             EndGame("Te has rendido...");
         }
 

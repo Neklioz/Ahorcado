@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Ahorcado"
         mc:Ignorable="d" 
         Title="Ahorcado" 
+        Icon="/assets/CuboDeGea.ico"
         Height="450" Width="800"
         MinHeight="450" MinWidth="500"
         KeyDown="Letter_KeyDown">
@@ -32,8 +33,8 @@
         </Viewbox>
         <Image x:Name="hangmanImage" Source="./assets/0.jpg" Stretch="Uniform" Margin="5" Grid.Row="1"></Image>
         <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" LastChildFill="False">
-            <Button x:Name="NewGameButton" DockPanel.Dock="Left" Content="Nuevo Juego" Width="85" Margin="5" Click="NewGameButton_Click"></Button>
-            <Button x:Name="SurrenderButton" DockPanel.Dock="Left" Content="Rendirse" Width="85" Margin="5" Click="Surrender_Click"></Button>
+            <Button x:Name="NewGameButton" DockPanel.Dock="Left" Content="Nuevo Juego" Width="85" Margin="5" Click="NewGameButton_Click" IsDefault="True"></Button>
+            <Button x:Name="SurrenderButton" DockPanel.Dock="Left" Content="Rendirse" Width="85" Margin="5" Click="Surrender_Click" IsCancel="True"></Button>
             <ComboBox x:Name="LanguagesComboBox" DockPanel.Dock="Right" Width="100" Margin="5" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">
                 <ComboBoxItem Tag="ES" Content="Español" IsSelected="True"></ComboBoxItem>
                 <ComboBoxItem Tag="US" Content="Inglés"></ComboBoxItem>
@@ -47,13 +48,13 @@
                 <!-- <ComboBoxItem Content="Monstruos"></ComboBoxItem> -->
             </ComboBox>
         </DockPanel>
-        <Grid Grid.Column="1" Grid.Row="1" Margin="20">
+        <Grid x:Name="LettersGrid" Grid.Column="1" Grid.Row="1" Margin="20">
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
-            <Viewbox>
+            <Viewbox x:Name="LettersViewbox">
                 <StackPanel x:Name="LettersStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 
                 </StackPanel>

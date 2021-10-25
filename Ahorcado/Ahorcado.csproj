@@ -34,6 +34,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>assets\CuboDeGea.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -103,6 +106,9 @@
     <Resource Include="assets\4.jpg" />
     <Resource Include="assets\5.jpg" />
     <Resource Include="assets\6.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\CuboDeGea.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
