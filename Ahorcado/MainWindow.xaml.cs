@@ -83,10 +83,7 @@ namespace Ahorcado
                 {
                     Text = word[i].ToString() == " " ? " " : "_",
                     Tag = parsedWord[i].ToString(),
-                    Margin = new Thickness(5),
-                    FontSize = 90,
-                    Width = 100,
-                    TextAlignment = TextAlignment.Center,
+                    Style = (Style)this.Resources["LetterTextBlock"]
                 };
                 LettersStackPanel.Children.Add(newLetter);
             }
@@ -95,12 +92,10 @@ namespace Ahorcado
 
         private String DeleteAccents(String word)
         {
-            
-            String parsedWord = new String(word.Normalize(NormalizationForm.FormD)
+
+            return new String(word.Normalize(NormalizationForm.FormD)
                 .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
                 .ToArray()).Normalize(NormalizationForm.FormC);
-
-            return parsedWord;
         }
 
         private void MostrarLetras()
@@ -131,6 +126,15 @@ namespace Ahorcado
                     words.Add("Halloween Zashi");
                     words.Add("Otohime");
                     words.Add("Summer Persephone");
+                    break;
+                case "abilities_ES":
+                    words.Add("Ataque Triple");
+                    words.Add("Bombardeo");
+                    words.Add("Mariposas Fantasmales");
+                    words.Add("Golondrina Negra");
+                    break;
+                case "abilities_US":
+                    words.Add("Fireball");
                     break;
                 case "masteries_ES":
                     words.Add("Fanatismo");
@@ -170,6 +174,12 @@ namespace Ahorcado
                     words.Add("Poor Winner");
                     words.Add("Wind Walker");
                     break;
+                case "monsters_ES":
+                    words.Add("Lucius");
+                    break;
+                case "monsters_US":
+                    words.Add("Luci us");
+                    break;
                 default:
                     break;
             }
@@ -194,7 +204,6 @@ namespace Ahorcado
                     {
                         Content = letters[contador],
                         Tag = letters[contador],
-                        Margin = new Thickness(5),
                     };
                     letter.Click += Letter_Click;
                     LetterButtonsUniformGrid.Children.Add(letter);
