@@ -101,15 +101,23 @@
             <RowDefinition Height="35"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+
+        <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" >
+            <Border BorderBrush="CornflowerBlue" BorderThickness="20" CornerRadius="20">
+                <Image Source="assets/Ahorcado_AK.png" Stretch="Uniform" HorizontalAlignment="Center"></Image>
+            </Border>
+        </Viewbox>
+        
+        
+        <!-- 
             <TextBlock Text="Ahorcado - Aura Kingdom">
                 <TextBlock.Foreground>
                     <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF2FD9FF" Offset="0" />
-                        <GradientStop Color="#FF002859" Offset="0.85" />
+                        <GradientStop Color="Pink" Offset="0" />
+                        <GradientStop Color="#FFC50E71" Offset="0.85" />
                     </LinearGradientBrush>
                 </TextBlock.Foreground></TextBlock>
-        </Viewbox>
+        </Viewbox> -->
         <Border BorderBrush="CornflowerBlue" BorderThickness="2" Grid.Row="1" Margin="5" CornerRadius="10">
             <Border.Background>
                 <ImageBrush x:Name="hangmanImage" ImageSource="./assets/0.jpg" Stretch="UniformToFill" />
