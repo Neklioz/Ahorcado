@@ -8,17 +8,40 @@
         Title="Ahorcado" 
         Icon="/assets/CuboDeGea.ico"
         Height="450" Width="800"
-        MinHeight="450" MinWidth="500"
+        MinHeight="450" MinWidth="800"
         KeyDown="Letter_KeyDown">
 
+    <Window.Background>
+        <ImageBrush Stretch="UniformToFill" Opacity="0.4" ImageSource="assets/mashupeidos.png" AlignmentY="Top" AlignmentX="Center" />
+    </Window.Background>
+    
     <Window.Resources>
 
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="5"></Setter>
+
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="5" Direction="300" Color="CornflowerBlue"></DropShadowEffect>
+                </Setter.Value>
+            </Setter>
+
         </Style>
 
-        <Style TargetType="{x:Type Button}" x:Key="GameButton">
+        <Style TargetType="{x:Type Button}" x:Key="GameButton" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Width" Value="85"></Setter>
+        </Style>
+
+        <Style TargetType="{x:Type Button}" x:Key="LetterButton" BasedOn="{StaticResource {x:Type Button}}">
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="LightBlue"></Setter>
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+
+            <Setter Property="Background" Value="LightBlue"></Setter>
+
         </Style>
 
         <Style TargetType="{x:Type TextBlock}" x:Key="LetterTextBlock">
@@ -26,17 +49,47 @@
             <Setter Property="FontSize" Value="90"></Setter>
             <Setter Property="Width" Value="100"></Setter>
             <Setter Property="TextAlignment" Value="Center"></Setter>
+            <!-- <Setter Property="Foreground" Value="AliceBlue"></Setter> -->
         </Style>
+
+        <Style TargetType="{x:Type TextBlock}" x:Key="Vidas">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="FontSize" Value="15"></Setter>
+        </Style>
+
         <Style TargetType="{x:Type ComboBox}">
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+            
             <Setter Property="Width" Value="100"></Setter>
             <Setter Property="Margin" Value="5"></Setter>
             <Setter Property="VerticalContentAlignment" Value="Center"></Setter>
             <Setter Property="HorizontalContentAlignment" Value="Center"></Setter>
+
+            <Setter Property="Background" Value="Azure"></Setter>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="5" Direction="300" Color="CornflowerBlue"></DropShadowEffect>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="{x:Type ComboBoxItem}">
+            <Style.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="5" />
+                </Style>
+            </Style.Resources>
+            
+            <Setter Property="Background" Value="Azure"></Setter>
         </Style>
     </Window.Resources>
-    
+
     <Grid Margin="10">
-        
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -45,7 +98,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"></RowDefinition>
             <RowDefinition Height="5*"></RowDefinition>
-            <RowDefinition Height="0.5*"></RowDefinition>
+            <RowDefinition Height="35"></RowDefinition>
         </Grid.RowDefinitions>
 
         <Viewbox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
@@ -57,33 +110,50 @@
                     </LinearGradientBrush>
                 </TextBlock.Foreground></TextBlock>
         </Viewbox>
-        <Image x:Name="hangmanImage" Source="./assets/0.jpg" Stretch="Uniform" Margin="5" Grid.Row="1"></Image>
-        <DockPanel Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" LastChildFill="False">
-            <Button x:Name="NewGameButton" Style="{StaticResource GameButton}" DockPanel.Dock="Left" Content="Nuevo Juego" Click="NewGameButton_Click" IsDefault="True"></Button>
-            <Button x:Name="SurrenderButton" Style="{StaticResource GameButton}" DockPanel.Dock="Left" Content="Rendirse" Click="Surrender_Click" IsCancel="True"></Button>
-            <ComboBox x:Name="LanguagesComboBox" DockPanel.Dock="Right">
+        <Border BorderBrush="CornflowerBlue" BorderThickness="2" Grid.Row="1" Margin="5" CornerRadius="10">
+            <Border.Background>
+                <ImageBrush x:Name="hangmanImage" ImageSource="./assets/0.jpg" Stretch="UniformToFill" />
+            </Border.Background>
+            <DockPanel LastChildFill="False" Width="150" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="5">
+                <TextBlock x:Name="numeroVidasTextBlock" Style="{StaticResource Vidas}" Text="7" DockPanel.Dock="Right"></TextBlock>
+                <TextBlock Style="{StaticResource Vidas}" Text="Vidas Restantes:" DockPanel.Dock="Right"></TextBlock>
+            </DockPanel>
+        </Border>
+
+        <DockPanel DockPanel.Dock="Left" Grid.Column="0" Grid.Row="2" LastChildFill="False">
+            <Button x:Name="NewGameButton" DockPanel.Dock="Left" Style="{StaticResource GameButton}" Content="Nuevo Juego" Click="NewGameButton_Click" IsDefault="True"></Button>
+            <Button x:Name="SurrenderButton" DockPanel.Dock="Right" Style="{StaticResource GameButton}" Content="Rendirse" Click="Surrender_Click" IsCancel="True"></Button>
+        </DockPanel>
+
+        <DockPanel x:Name="OptionsDockPanel" Grid.Column="1" Grid.Row="2" LastChildFill="False" Margin="20,0">
+            <ComboBox x:Name="LanguagesComboBox" DockPanel.Dock="Right" Focusable="False">
                 <ComboBoxItem Tag="ES" Content="Español" IsSelected="True"></ComboBoxItem>
                 <ComboBoxItem Tag="US" Content="Inglés"></ComboBoxItem>
             </ComboBox>
-            <ComboBox x:Name="SetsComboBox" DockPanel.Dock="Right">
+            <ComboBox x:Name="SetsComboBox" DockPanel.Dock="Right" Focusable="False">
                 <ComboBoxItem Tag="eidolons" Content="Eidolon"></ComboBoxItem>
                 <ComboBoxItem Tag="abilities" Content="Habilidades"></ComboBoxItem>
-                <ComboBoxItem Tag="masteries" Content="Maestrías"></ComboBoxItem>
                 <ComboBoxItem Tag="items" Content="Objetos"></ComboBoxItem>
                 <ComboBoxItem Tag="titles" Content="Títulos"></ComboBoxItem>
-                <!-- <ComboBoxItem Tag="monsters" Content="Monstruos"></ComboBoxItem> -->
+                <ComboBoxItem Tag="monsters" Content="Monstruos"></ComboBoxItem>
             </ComboBox>
         </DockPanel>
         <Grid x:Name="LettersGrid" Grid.Column="1" Grid.Row="1" Margin="20">
+            
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
 
             <Viewbox x:Name="LettersViewbox">
-                <StackPanel x:Name="LettersStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Border BorderBrush="CornflowerBlue" BorderThickness="4" CornerRadius="10">
+                    <StackPanel x:Name="LettersStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <StackPanel.Background>
+                            <SolidColorBrush Color="AliceBlue" Opacity="0.3"></SolidColorBrush>
+                        </StackPanel.Background>
+                    </StackPanel>
+                </Border>
                 
-                </StackPanel>
             </Viewbox>
             <UniformGrid x:Name="LetterButtonsUniformGrid" Grid.Row="1" Columns="9" Rows="3"></UniformGrid>
         </Grid>

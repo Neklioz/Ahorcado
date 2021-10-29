@@ -110,5 +110,8 @@
   <ItemGroup>
     <Resource Include="assets\CuboDeGea.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\mashupeidos.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

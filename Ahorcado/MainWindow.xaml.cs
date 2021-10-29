@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,7 +27,8 @@ namespace Ahorcado
         String word;
         String parsedWord;
         string[] letters = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "Ñ", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-        int fallos = 0;
+        int maxMistakes = 7;
+        int mistakes = 0;
         int letrasAcertadas = 0;
 
         public MainWindow()
@@ -46,15 +48,15 @@ namespace Ahorcado
             if (!firstGame)
             {
                 DisableComboBoxWarnings();
-                fallos = 0;
-                hangmanImage.Source = new BitmapImage(new Uri(@"/assets/" + fallos + ".jpg", UriKind.Relative));
+                mistakes = 0;
+                numeroVidasTextBlock.Text = (maxMistakes - mistakes).ToString();
+                hangmanImage.ImageSource = new BitmapImage(new Uri(@"../../assets/" + mistakes + ".jpg", UriKind.Relative));
                 letrasAcertadas = 0;
                 EnableButtons(true);
                 LettersStackPanel.Children.Clear();
                 SurrenderButton.IsEnabled = true;
             }
             SelectWord();
-            ViewBoxCheck();
             EnableComboBoxWarnings();
         }
 
@@ -77,11 +79,16 @@ namespace Ahorcado
 
             for (int i = 0; i < word.Length; i++)
             {
-                if(word[i].ToString() == " ") letrasAcertadas++;
+                String letraAAñadir = "_";
+                if (!Char.IsLetter(parsedWord[i]))
+                {
+                    letraAAñadir = word[i].ToString();
+                    letrasAcertadas++;
+                }
 
                 TextBlock newLetter = new TextBlock
                 {
-                    Text = word[i].ToString() == " " ? " " : "_",
+                    Text = letraAAñadir,
                     Tag = parsedWord[i].ToString(),
                     Style = (Style)this.Resources["LetterTextBlock"]
                 };
@@ -92,10 +99,8 @@ namespace Ahorcado
 
         private String DeleteAccents(String word)
         {
-
-            return new String(word.Normalize(NormalizationForm.FormD)
-                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
-                .ToArray()).Normalize(NormalizationForm.FormC);
+            return string.Concat(Regex.Replace(word, @"(?i)[\p{L}-[ña-z]]+", m => m.Value.Normalize(NormalizationForm.FormD))
+                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark));
         }
 
         private void MostrarLetras()
@@ -126,39 +131,64 @@ namespace Ahorcado
                     words.Add("Halloween Zashi");
                     words.Add("Otohime");
                     words.Add("Summer Persephone");
+                    words.Add("Salome");
+                    words.Add("Inaba");
+                    words.Add("Genbu");
+                    words.Add("Urd");
+                    words.Add("Aoandon");
+                    words.Add("Qingniao");
+                    words.Add("Sakuya-hime");
+                    words.Add("Tyr");
                     break;
                 case "abilities_ES":
-                    words.Add("Ataque Triple");
+                    words.Add("Asesinato");
                     words.Add("Bombardeo");
-                    words.Add("Mariposas Fantasmales");
+                    words.Add("Mariposas Fulminantes");
                     words.Add("Golondrina Negra");
+                    words.Add("Golpe de Trueno Divino");
+                    words.Add("Golpe Desmesurado");
+                    words.Add("Electro Funk");
+                    words.Add("Disparo Dimensional");
+                    words.Add("Liberación de la Marca");
+                    words.Add("Estrella Almíbar");
+                    words.Add("Destello de Ignis");
                     break;
                 case "abilities_US":
                     words.Add("Fireball");
-                    break;
-                case "masteries_ES":
-                    words.Add("Fanatismo");
-                    words.Add("Romper la Defensa");
-                    words.Add("Vigor");
-                    break;
-                case "masteries_US":
-                    words.Add("Divine Power");
-                    words.Add("Recapitulation of the Pistols");
-                    words.Add("Theory of Ars Noxia");
+                    words.Add("Decoy");
+                    words.Add("Implosion");
+                    words.Add("Terrifying Roar");
+                    words.Add("Spur");
+                    words.Add("Frantic Lotus");
+                    words.Add("Frozen Tomb");
+                    words.Add("Phase Shift Laser");
+                    words.Add("Ground Slasher");
                     break;
                 case "items_ES":
                     words.Add("Rodajas de Sandía");
                     words.Add("Katana de Gea");
-                    words.Add("Poción de Reiniciación de Gemas Secretas Superior");
                     words.Add("Pargo Rápido");
                     words.Add("Monopatín Rayo Cósmico");
+                    words.Add("Fulgor - Dragón Divino de Ojos Dorados");
+                    words.Add("Flotador Playero Moderno");
+                    words.Add("Gato Portafortuna");
+                    words.Add("Danza de Artemisa");
+                    words.Add("Emblema de Pesadilla - Eternidad");
+                    words.Add("Polvo Rosa Dorado");
+                    words.Add("Dragoñeco Engañoso");
                     break;
                 case "items_US":
                     words.Add("Sturdy Axe");
                     words.Add("Titan Warrior Battle Boots");
                     words.Add("Purified Obsidian Bracelet");
-                    words.Add("Purified Obsidian Bracelet");
                     words.Add("Beebis the Ostrich");
+                    words.Add("Pumpkin Phantom");
+                    words.Add("Viridescent Flaming Phoenix Wings");
+                    words.Add("Fearless Staff");
+                    words.Add("Fated Dark Tarot Card");
+                    words.Add("Yellow Bird Hatchling");
+                    words.Add("Insidius");
+                    words.Add("Soulsucker Ore");
                     break;
                 case "titles_ES":
                     words.Add("Eres adorable pero yo soy inmune");
@@ -167,18 +197,49 @@ namespace Ahorcado
                     words.Add("Confidente de Skandia");
                     words.Add("Vinatero Sustituto");
                     words.Add("Caracolero");
+                    words.Add("Me pelo de frío");
+                    words.Add("Servicio de atención al cliente");
+                    words.Add("Fresco como una lechuga");
+                    words.Add("Ahora sólo tomo jugo de tomate");
+                    words.Add("UwU");
+                    words.Add("LEGEN - espera - DARIO");
                     break;
                 case "titles_US":
                     words.Add("Avatar");
                     words.Add("Puzzle Pro");
                     words.Add("Poor Winner");
                     words.Add("Wind Walker");
+                    words.Add("Miraculous");
+                    words.Add("Iron Man");
+                    words.Add("Womanizer");
+                    words.Add("Toxic Beauty");
+                    words.Add("Regicide");
+                    words.Add("Does this Air Make Me Look Fat?");
+                    words.Add("YOLO");
                     break;
                 case "monsters_ES":
-                    words.Add("Lucius");
+                    words.Add("<Felio joven> Paparr Ryan");
+                    words.Add("<Duque no muerto> Tarand");
+                    words.Add("<Señor de la Guerra Hanba> Gorka");
+                    words.Add("<Antiguo enviado de Gea> Ninus el maldito");
+                    words.Add("<Segador de pesadilla> Scheel");
+                    words.Add("<Duque alado> Avidas");
+                    words.Add("<Anhelo de destino> Lucius");
+                    words.Add("<Reflejo Oscuro> Enviado de Gea");
+                    words.Add("<Corderita> Beeeeelén");
+                    words.Add("<Reina Demoníaca del Ultramundo> Delfi");
                     break;
                 case "monsters_US":
-                    words.Add("Luci us");
+                    words.Add("<Desert Stalwart> Zangis");
+                    words.Add("<Parallax Prince> Gareth");
+                    words.Add("<Split Personality> Rabisu");
+                    words.Add("<Soul Shatterer> Keres");
+                    words.Add("<Cult Leader> Zaunna");
+                    words.Add("<Zombie Gatekeeper> Malodnak");
+                    words.Add("<Glimmering Princess> Fia");
+                    words.Add("<Blood Spider Queen> Tavana");
+                    words.Add("<Transformer Bouncer> Galio");
+                    words.Add("<Tiny Hornwolf> Fenrir");
                     break;
                 default:
                     break;
@@ -204,28 +265,13 @@ namespace Ahorcado
                     {
                         Content = letters[contador],
                         Tag = letters[contador],
+                        Style = (Style)this.Resources["LetterButton"]
                     };
                     letter.Click += Letter_Click;
                     LetterButtonsUniformGrid.Children.Add(letter);
 
                     contador++;
                 }
-            }
-        }
-
-        private void ViewBoxCheck()
-        {
-            LettersViewbox.Child = LettersStackPanel;
-            FrameworkElement child = LettersViewbox.Child as FrameworkElement;
-            double childWidth = child.ActualWidth;
-
-            if(childWidth > 2000)
-            {
-                MessageBox.Show("Ok");
-                LettersViewbox.Child = null;
-                ScrollViewer scrollviewer = new ScrollViewer();
-                scrollviewer.HorizontalScrollBarVisibility = ScrollBarVisibility.Auto;
-                LettersGrid.Children.Add(scrollviewer);
             }
         }
 
@@ -252,9 +298,11 @@ namespace Ahorcado
             }
             else
             {
-                fallos++;
-                hangmanImage.Source = new BitmapImage(new Uri(@"/assets/" + fallos + ".jpg", UriKind.Relative));
-                if (fallos >= 7)
+                mistakes++;
+                hangmanImage.ImageSource = new BitmapImage(new Uri(@"../../assets/" + mistakes + ".jpg", UriKind.Relative));
+                numeroVidasTextBlock.Text = (maxMistakes - mistakes).ToString();
+
+                if (mistakes >= maxMistakes)
                 {
                     EndGame("¡Has perdido! Mas suerte la próxima");
                 }
@@ -296,6 +344,7 @@ namespace Ahorcado
                 {
                     wasEnabled = button.IsEnabled;
                     button.IsEnabled = false;
+                    button.Visibility = Visibility.Hidden;
                 }
             }
 
@@ -308,6 +357,7 @@ namespace Ahorcado
             foreach (Button button in LetterButtonsUniformGrid.Children)
             {
                 button.IsEnabled = enable;
+                button.Visibility = enable ? Visibility.Visible : Visibility.Hidden;
             }
         }
 
@@ -315,6 +365,7 @@ namespace Ahorcado
         {
             Button button = (Button)sender;
             button.IsEnabled = false;
+            button.Visibility = Visibility.Hidden;
 
             CheckLetter(button.Tag.ToString().ToUpper());
             
@@ -327,6 +378,9 @@ namespace Ahorcado
 
         private void Surrender_Click(object sender, RoutedEventArgs e)
         {
+            mistakes = 7;
+            hangmanImage.ImageSource = new BitmapImage(new Uri(@"../../assets/" + mistakes + ".jpg", UriKind.Relative));
+            numeroVidasTextBlock.Text = (maxMistakes - mistakes).ToString();
             EndGame("Te has rendido...");
         }
 
