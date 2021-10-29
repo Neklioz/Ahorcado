@@ -115,5 +115,8 @@
   <ItemGroup>
     <Resource Include="assets\Ahorcado_AK.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="assets\7.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
